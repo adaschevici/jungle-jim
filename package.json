@@ -4,12 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "npx json-server data/data.json --config data/server-config.json"
+    "server": "pm2 start ecosystem.config.js",
+    "server:dev": "pm2-dev start ecosystem.config.js",
+    "stop": "pm2 stop ecosystem.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "json-server": "^0.16.1"
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "json-server": "^0.16.1",
+    "jsonwebtoken": "^8.5.1",
+    "pm2": "^4.2.3",
+    "prettier": "^2.0.2"
   }
 }
