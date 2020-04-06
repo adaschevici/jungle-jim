@@ -9,7 +9,11 @@ const server = require('json-server').create()
 const router = jsonServer.router('data/data.json')
 const bcrypt = require('bcrypt')
 
-const { randomThrottleMiddleware } = require('./middlewares')
+const {
+  randomThrottleMiddleware,
+  authRequiredMiddleware,
+  withAuth,
+} = require('./middlewares')
 const jsonServerMiddlewares = jsonServer.defaults()
 
 const port = process.env.PORT
@@ -21,6 +25,7 @@ server.use(bodyParser.json())
 server.use(cookieParser())
 
 server.use(jsonServerMiddlewares)
+server.use(authRequiredMiddleware)
 server.use(randomThrottleMiddleware)
 
 server.post('/auth/register', async (req, res) => {
@@ -74,6 +79,10 @@ server.post('/auth/authenticate', async (req, res) => {
           })
       }
     })
+})
+
+server.post('/auth/check-token', withAuth, (req, res) => {
+  return res.sendStatus(200)
 })
 
 server.use(router)
