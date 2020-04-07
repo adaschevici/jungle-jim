@@ -1,4 +1,4 @@
-# monkey-api
+# jungle-jim
 
 This is a mock api for a book database based on `json-server` it emulates multiple endpoints.
 
