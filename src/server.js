@@ -82,7 +82,9 @@ server.post('/auth/authenticate', async (req, res) => {
 })
 
 server.post('/auth/check-token', withAuth, (req, res) => {
-  return res.sendStatus(200)
+  return res.status(200).json({
+    username: req.email,
+  })
 })
 
 server.use(router)
