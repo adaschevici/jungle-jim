@@ -8,6 +8,7 @@ const axios = require('axios')
 const server = require('json-server').create()
 const router = jsonServer.router('data/data.json')
 const bcrypt = require('bcrypt')
+const chalk = require('chalk')
 
 const {
   randomThrottleMiddleware,
@@ -32,13 +33,47 @@ server.post('/auth/register', async (req, res) => {
   const { email, password } = req.body
   const rounds = process.env.SALT_ROUNDS || 12
   const passHash = await bcrypt.hash(password, rounds)
-  const create = axios.post(`${basePath}:${port}/users`, {
-    id: email,
-    passwordHash: passHash,
-  })
-  create
+  const create = () =>
+    axios.post(`${basePath}:${port}/users`, {
+      id: email,
+      passwordHash: passHash,
+    })
+  const rollback = () => axios.delete(`${basePath}:${port}/users/${email}`)
+  const initializeBookProgress = () =>
+    axios.post(`${basePath}:${port}/book-progress`, {
+      id: email,
+      books: [],
+    })
+  create()
     .then(() =>
-      res.status(201).json({ success: 'User successfully created :D' })
+      initializeBookProgress()
+        .then(() => {
+          console.log(chalk.green('Initialized book progress'))
+          return res.status(201).json({
+            success: 'User successfully created and book list initialized :D',
+          })
+        })
+        .catch((err) => {
+          console.log(chalk.red(err))
+          rollback()
+            .then(() =>
+              console.warn(
+                chalk.yellow(
+                  'User rolled back because of failure, failed to create books in progress'
+                )
+              )
+            )
+            .then(() =>
+              console.log(
+                chalk.red(`Unable to initialize books list for user ${err}`)
+              )
+            )
+            .then(() =>
+              res
+                .status(500)
+                .json({ failed: `Unable to create user, failed with ${err}` })
+            )
+        })
     )
     .catch((err) =>
       res
