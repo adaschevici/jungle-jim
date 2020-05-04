@@ -7,7 +7,7 @@ const urlFragments = ['^/images', '^/meta', '^/ratings'].map(
   (fragment) => new RegExp(fragment)
 )
 
-const authUrls = ['^/ratings', '^/auth/check-token'].map(
+const authUrls = ['^/auth/check-token'].map(
   (fragment) => new RegExp(fragment)
 )
 
