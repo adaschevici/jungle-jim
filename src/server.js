@@ -21,7 +21,6 @@ const basePath = process.env.BASE_PATH
 const secret = process.env.SECRET
 const environment = process.env.ENVIRONMENT
 
-console.log(environment === 'TEST')
 const jsonFixturePath =
   environment === 'TEST' ? 'data/test-data.json' : 'data/data.json'
 
