@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const axios = require('axios')
 const server = require('json-server').create()
-const router = jsonServer.router('data/data.json')
 const bcrypt = require('bcrypt')
 const chalk = require('chalk')
 
@@ -20,7 +19,13 @@ const jsonServerMiddlewares = jsonServer.defaults()
 const port = process.env.PORT
 const basePath = process.env.BASE_PATH
 const secret = process.env.SECRET
+const environment = process.env.ENVIRONMENT
 
+console.log(environment === 'TEST')
+const jsonFixturePath =
+  environment === 'TEST' ? 'data/test-data.json' : 'data/data.json'
+
+const router = jsonServer.router(jsonFixturePath)
 server.use(bodyParser.urlencoded({ extended: false }))
 server.use(bodyParser.json())
 server.use(cookieParser())
