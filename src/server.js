@@ -8,6 +8,8 @@ const axios = require('axios')
 const server = require('json-server').create()
 const bcrypt = require('bcrypt')
 const chalk = require('chalk')
+const low = require('lowdb')
+const Memory = require('lowdb/adapters/Memory')
 
 const {
   randomThrottleMiddleware,
@@ -20,6 +22,7 @@ const port = process.env.PORT
 const basePath = process.env.BASE_PATH
 const secret = process.env.SECRET
 const environment = process.env.ENVIRONMENT
+const snapshots = []
 
 const jsonFixturePath =
   environment === 'TEST' ? 'data/test-data.json' : 'data/data.json'
@@ -125,6 +128,26 @@ server.post('/auth/check-token', withAuth, (req, res) => {
     username: req.email,
   })
 })
+
+if (environment === 'TEST') {
+  server.post('/test/snapshot', async (req, res) => {
+    const { data } = await axios.get(`${basePath}:${port}/db`)
+    const snapshot = low(new Memory()).setState(data)
+    snapshots.push(snapshot)
+    return res.status(201).json({
+      message: 'Snapshot of internal db created',
+    })
+  })
+
+  server.post('/test/restore-snapshot', (req, res) => {
+    const snapshot = snapshots.pop()
+    router.db.setState(snapshot)
+    router.db.write()
+    return res.status(200).json({
+      message: 'Rolled back to most recent snapshot',
+    })
+  })
+}
 
 server.use(router)
 
