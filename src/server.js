@@ -18,7 +18,7 @@ const {
 } = require('./middlewares')
 const jsonServerMiddlewares = jsonServer.defaults()
 
-const port = process.env.PORT
+const port = process.env.API_PORT
 const basePath = process.env.BASE_PATH
 const secret = process.env.SECRET
 const environment = process.env.ENVIRONMENT
