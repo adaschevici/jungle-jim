@@ -21,11 +21,11 @@ const jsonServerMiddlewares = jsonServer.defaults()
 const port = process.env.API_PORT
 const basePath = process.env.BASE_PATH
 const secret = process.env.SECRET
-const environment = process.env.ENVIRONMENT
+const environment_is_test = process.env.IS_TEST
 const snapshots = []
 
 const jsonFixturePath =
-  environment === 'TEST' ? 'data/test-data.json' : 'data/data.json'
+  environment_is_test === 'true' ? 'data/test-data.json' : 'data/data.json'
 
 const router = jsonServer.router(jsonFixturePath)
 server.use(bodyParser.urlencoded({ extended: false }))
@@ -129,7 +129,7 @@ server.post('/auth/check-token', withAuth, (req, res) => {
   })
 })
 
-if (environment === 'TEST') {
+if (environment_is_test === 'true') {
   server.post('/test/snapshot', async (req, res) => {
     const { data } = await axios.get(`${basePath}:${port}/db`)
     const snapshot = low(new Memory()).setState(data)
