@@ -12,7 +12,7 @@ module.exports = {
       ignore_watch: ['node_modules', 'data'],
       max_memory_restart: '1G',
       env: {
-        API_PORT: '4242',
+        API_PORT: '5000',
         BASE_PATH: 'http://localhost',
         NODE_ENV: 'development',
       },
