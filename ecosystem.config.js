@@ -14,12 +14,14 @@ module.exports = {
       env: {
         API_PORT: '5000',
         BASE_PATH: 'http://localhost',
+        SECRET: 'shhhh',
         NODE_ENV: 'development',
       },
       env_ci: {
         API_PORT: '5000',
         IS_TEST: true,
         BASE_PATH: 'http://127.0.0.1',
+        SECRET: 'shhhh',
         NODE_ENV: 'ci',
       },
       env_production: {
