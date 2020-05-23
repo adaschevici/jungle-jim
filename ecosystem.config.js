@@ -17,6 +17,13 @@ module.exports = {
         SECRET: 'shhhh',
         NODE_ENV: 'development',
       },
+      env_huge: {
+        API_PORT: '5000',
+        BASE_PATH: 'http://localhost',
+        IS_HUGE: true,
+        SECRET: 'shhhh',
+        NODE_ENV: 'development',
+      },
       env_ci: {
         API_PORT: '5000',
         IS_TEST: true,

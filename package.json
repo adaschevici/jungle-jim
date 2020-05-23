@@ -6,6 +6,7 @@
   "scripts": {
     "server": "pm2 start ecosystem.config.js",
     "server:dev": "pm2-dev start ecosystem.config.js",
+    "server:huge": "pm2-dev start ecosystem.config.js --env huge",
     "server:test": "pm2-dev start ecosystem.config.js --env ci",
     "server:test:ci": "pm2 start ecosystem.config.js --env ci",
     "stop": "pm2 stop ecosystem.config.js"

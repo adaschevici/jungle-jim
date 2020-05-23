@@ -22,10 +22,18 @@ const port = process.env.API_PORT
 const basePath = process.env.BASE_PATH
 const secret = process.env.SECRET
 const environment_is_test = process.env.IS_TEST
+const data_is_large = process.env.IS_HUGE
 const snapshots = []
 
-const jsonFixturePath =
-  environment_is_test === 'true' ? 'data/test-data.json' : 'data/data.json'
+let jsonFixturePath =
+  environment_is_test === 'true'
+    ? 'data/data.test.json'
+    : 'data/data.average.json'
+
+console.log(data_is_large)
+console.log(jsonFixturePath)
+jsonFixturePath =
+  data_is_large === 'true' ? 'data/data.huge.json' : jsonFixturePath
 
 const router = jsonServer.router(jsonFixturePath)
 server.use(bodyParser.urlencoded({ extended: false }))
